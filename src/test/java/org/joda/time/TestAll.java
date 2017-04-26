@@ -134,7 +134,7 @@ public class TestAll extends TestCase {
     }
 
     public static void main(String args[]) {
-				System.out.println(Bug creation);
+				System.out.println("bug fixed");
 
         String[] testCaseName = {
             TestAll.class.getName()
