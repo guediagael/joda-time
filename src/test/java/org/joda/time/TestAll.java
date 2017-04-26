@@ -134,7 +134,7 @@ public class TestAll extends TestCase {
     }
 
     public static void main(String args[]) {
-				System.out.println("User build : first step");
+				System.out.println(Bug creation);
 
         String[] testCaseName = {
             TestAll.class.getName()
