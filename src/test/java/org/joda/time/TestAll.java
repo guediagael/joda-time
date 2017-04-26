@@ -134,7 +134,7 @@ public class TestAll extends TestCase {
     }
 
     public static void main(String args[]) {
-				System.out.println("First scenario");
+				System.out.println("Scenario One: Build with test from the user");
 
         String[] testCaseName = {
             TestAll.class.getName()
