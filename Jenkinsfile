@@ -3,7 +3,7 @@ node {
   stage ('Initialize') {
     echo 'Initialize...'
     checkout scm
-    String mvn = sh (script: 'find /user/bin/mvn -name mvn',
+    String mvn = sh (script: 'find ../../../user/bin/mvn -name mvn',
                      returnStdout: true).trim()
     if (mvn.length() <= 0) {
       error("mvn is not installed")
