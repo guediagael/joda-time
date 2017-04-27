@@ -3,31 +3,31 @@ node {
   stage ('Initialize') {
     echo 'Initialize...'
     checkout scm
-    String mvn = bat (script: 'find /usr/bin -name mvn',
+    String mvn = sh (script: 'find /usr/bin -name mvn',
                      returnStdout: true).trim()
     if (mvn.length() <= 0) {
       error("mvn is not installed")
     }
 
     // evosuite
-    String evosuiteJar = bat (script: 'find /home/TheLetch/.jenkins/tools -name evosuite-1.0.3.jar',
+    String evosuiteJar = sh (script: 'find /home/TheLetch/.jenkins/tools -name evosuite-1.0.3.jar',
                              returnStdout: true).trim()
     if (evosuiteJar.length() <= 0) {
       // install evosuite
-      bat 'mkdir -p /home/TheLetch/.jenkins/tools/evosuite'
-      bat 'wget -O /home/TheLetch/.jenkins/tools/evosuite/evosuite-1.0.3.jar https://github.com/EvoSuite/evosuite/releases/download/v1.0.3/evosuite-1.0.3.jar'
-      evosuiteJar = bat (script: 'find /home/TheLetch/.jenkins/tools -name evosuite-1.0.3.jar',
+      sh 'mkdir -p /home/TheLetch/.jenkins/tools/evosuite'
+      sh 'wget -O /home/TheLetch/.jenkins/tools/evosuite/evosuite-1.0.3.jar https://github.com/EvoSuite/evosuite/releases/download/v1.0.3/evosuite-1.0.3.jar'
+      evosuiteJar = sh (script: 'find /home/TheLetch/.jenkins/tools -name evosuite-1.0.3.jar',
                         returnStdout: true).trim()
     }
 
     // evosuite runtime
-    String evosuiteRuntimeJar = bat (script: 'find /home/TheLetch/.jenkins/tools -name evosuite-standalone-runtime-1.0.3.jar',
+    String evosuiteRuntimeJar = sh (script: 'find /home/TheLetch/.jenkins/tools -name evosuite-standalone-runtime-1.0.3.jar',
                                     returnStdout: true).trim()
     if (evosuiteRuntimeJar.length() <= 0) {
       // install evosuite runtime
-      bat 'mkdir -p /home/TheLetch/.jenkins/tools/evosuite'
-      bat 'wget -O /home/TheLetch/.jenkins/tools/evosuite/evosuite-standalone-runtime-1.0.3.jar https://github.com/EvoSuite/evosuite/releases/download/v1.0.3/evosuite-standalone-runtime-1.0.3.jar'
-      evosuiteRuntimeJar = bat (script: '/home/TheLetch/.jenkins/tools -name evosuite-standalone-runtime-1.0.3.jar',
+      sh 'mkdir -p /home/TheLetch/.jenkins/tools/evosuite'
+      sh 'wget -O /home/TheLetch/.jenkins/tools/evosuite/evosuite-standalone-runtime-1.0.3.jar https://github.com/EvoSuite/evosuite/releases/download/v1.0.3/evosuite-standalone-runtime-1.0.3.jar'
+      evosuiteRuntimeJar = sh (script: '/home/TheLetch/.jenkins/tools -name evosuite-standalone-runtime-1.0.3.jar',
                                returnStdout: true).trim()
     }
 
@@ -40,10 +40,10 @@ node {
   stage ('Build (prev)') {
     echo 'Build (prev)...'
     withEnv(testingEnv) {
-      bat "git checkout HEAD~1"
-      bat "${mvn} clean compile dependency:copy-dependencies"
+      sh "git checkout HEAD~1"
+      sh "${mvn} clean compile dependency:copy-dependencies"
 
-      def deps = bat (script: 'ls -1 target/dependency',
+      def deps = sh (script: 'ls -1 target/dependency',
                      returnStdout: true).trim().split("\n")
       def cp = "target/classes:target/evosuite-classes:${evosuiteRuntimeJar}:evosuite-tests"
       for (int i = 0; i < deps.size(); i++) {
@@ -60,9 +60,9 @@ node {
     for (int i = 0; i < changeClasses.size(); i++) {
       def cc = changeClasses.get(i)
       withEnv(testingEnv) {
-        bat "${evosuite} -class ${cc} -projectCP target/classes -Dsearch_budget=1"
-        bat "mkdir -p ${es_cls_dir}"
-        bat "javac -cp ${classpath} -d ${es_cls_dir} evosuite-tests/tutorial/*.java"
+        sh "${evosuite} -class ${cc} -projectCP target/classes -Dsearch_budget=1"
+        sh "mkdir -p ${es_cls_dir}"
+        sh "javac -cp ${classpath} -d ${es_cls_dir} evosuite-tests/tutorial/*.java"
       }
     }
   }
