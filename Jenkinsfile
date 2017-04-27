@@ -55,7 +55,7 @@ node {
 
   stage ('TestGen') {
     echo 'TestGen...'
-    def changeClasses = ["src.main.java.org.joda.time.Days", "src.main.java.org.joda.time.DateTime"]
+    def changeClasses = ["org.joda.time.Days", "org.joda.time.DateTime"]
     def es_cls_dir = "target/evosuite-classes"
     for (int i = 0; i < changeClasses.size(); i++) {
       def cc = changeClasses.get(i)
