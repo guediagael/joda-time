@@ -3,35 +3,35 @@ node {
   stage ('Initialize') {
     echo 'Initialize...'
     checkout scm
-    String mvn = sh (script: 'find /usr/bin -name mvn',
+    String mvn = sh (script: 'find /var/jenkins_home/tools -name mvn',
                      returnStdout: true).trim()
     if (mvn.length() <= 0) {
       error("mvn is not installed")
     }
 
     // evosuite
-    String evosuiteJar = sh (script: 'find /home/TheLetch/.jenkins/tools -name evosuite-1.0.3.jar',
+    String evosuiteJar = sh (script: 'find /var/jenkins_home/tools -name evosuite-1.0.3.jar',
                              returnStdout: true).trim()
     if (evosuiteJar.length() <= 0) {
       // install evosuite
-      sh 'mkdir -p /home/TheLetch/.jenkins/tools/evosuite'
-      sh 'wget -O /home/TheLetch/.jenkins/tools/evosuite/evosuite-1.0.3.jar https://github.com/EvoSuite/evosuite/releases/download/v1.0.3/evosuite-1.0.3.jar'
-      evosuiteJar = sh (script: 'find /home/TheLetch/.jenkins/tools -name evosuite-1.0.3.jar',
+      sh 'mkdir -p /var/jenkins_home/tools/evosuite'
+      sh 'wget -O /var/jenkins_home/tools/evosuite/evosuite-1.0.3.jar https://github.com/EvoSuite/evosuite/releases/download/v1.0.3/evosuite-1.0.3.jar'
+      evosuiteJar = sh (script: 'find /var/jenkins_home/tools -name evosuite-1.0.3.jar',
                         returnStdout: true).trim()
     }
 
     // evosuite runtime
-    String evosuiteRuntimeJar = sh (script: 'find /home/TheLetch/.jenkins/tools -name evosuite-standalone-runtime-1.0.3.jar',
+    String evosuiteRuntimeJar = sh (script: 'find /var/jenkins_home/tools -name evosuite-standalone-runtime-1.0.3.jar',
                                     returnStdout: true).trim()
     if (evosuiteRuntimeJar.length() <= 0) {
       // install evosuite runtime
-      sh 'mkdir -p /home/TheLetch/.jenkins/tools/evosuite'
-      sh 'wget -O /home/TheLetch/.jenkins/tools/evosuite/evosuite-standalone-runtime-1.0.3.jar https://github.com/EvoSuite/evosuite/releases/download/v1.0.3/evosuite-standalone-runtime-1.0.3.jar'
-      evosuiteRuntimeJar = sh (script: '/home/TheLetch/.jenkins/tools -name evosuite-standalone-runtime-1.0.3.jar',
+      sh 'mkdir -p /var/jenkins_home/tools/evosuite'
+      sh 'wget -O /var/jenkins_home/tools/evosuite/evosuite-standalone-runtime-1.0.3.jar https://github.com/EvoSuite/evosuite/releases/download/v1.0.3/evosuite-standalone-runtime-1.0.3.jar'
+      evosuiteRuntimeJar = sh (script: '/var/jenkins_home/tools -name evosuite-standalone-runtime-1.0.3.jar',
                                returnStdout: true).trim()
     }
 
-    def evosuite = "java -jar /home/TheLetch/.jenkins/tools/evosuite/evosuite-1.0.3.jar"
+    def evosuite = "java -jar /var/jenkins_home/tools/evosuite/evosuite-1.0.3.jar"
     testingEnv = ["mvn=${mvn}",
                   "evosuite=${evosuite}",
                   "evosuiteRuntimeJar=${evosuiteRuntimeJar}"]
