@@ -3,7 +3,7 @@ node {
   stage ('Initialize') {
     echo 'Initialize...'
     checkout scm
-    String mvn = sh (script: 'find /var/jenkins_home/tools -name mvn',
+    String mvn = sh (script: 'find /user/bin/mvn -name mvn',
                      returnStdout: true).trim()
     if (mvn.length() <= 0) {
       error("mvn is not installed")
@@ -14,8 +14,8 @@ node {
                              returnStdout: true).trim()
     if (evosuiteJar.length() <= 0) {
       // install evosuite
-      sh 'mkdir -p /var/jenkins_home/tools/evosuite'
-      sh 'wget -O /var/jenkins_home/tools/evosuite/evosuite-1.0.3.jar https://github.com/EvoSuite/evosuite/releases/download/v1.0.3/evosuite-1.0.3.jar'
+      bat 'mkdir -p /var/jenkins_home/tools/evosuite'
+      bat 'wget -O /var/jenkins_home/tools/evosuite/evosuite-1.0.3.jar https://github.com/EvoSuite/evosuite/releases/download/v1.0.3/evosuite-1.0.3.jar'
       evosuiteJar = sh (script: 'find /var/jenkins_home/tools -name evosuite-1.0.3.jar',
                         returnStdout: true).trim()
     }
