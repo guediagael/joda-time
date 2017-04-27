@@ -62,7 +62,7 @@ node {
       withEnv(testingEnv) {
         sh "${evosuite} -class ${cc} -projectCP target/classes -Dsearch_budget=1"
         sh "mkdir -p ${es_cls_dir}"
-        sh "javac -cp ${classpath} -d ${es_cls_dir} evosuite-tests/tutorial/*.java"
+        sh "javac -cp ${classpath} -d ${es_cls_dir} evosuite-tests/org/joda/time/*.java"
       }
     }
   }
