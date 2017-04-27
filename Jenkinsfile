@@ -3,35 +3,35 @@ node {
   stage ('Initialize') {
     echo 'Initialize...'
     checkout scm
-    String mvn = bat (script: 'find \\var\\jenkins_home\\tools -name mvn',
+    String mvn = bat (script: 'find C:\\Users\\TheLetch\\.jenkins\\tools -name mvn',
                      returnStdout: true).trim()
     if (mvn.length() <= 0) {
       error("mvn is not installed")
     }
 
     // evosuite
-    String evosuiteJar = bat (script: 'find \\var\\jenkins_home\\tools -name evosuite-1.0.3.jar',
+    String evosuiteJar = bat (script: 'find C:\\Users\\TheLetch\\.jenkins\\tools -name evosuite-1.0.3.jar',
                              returnStdout: true).trim()
     if (evosuiteJar.length() <= 0) {
       // install evosuite
-      bat 'mkdir -p \\var\\jenkins_home\\tools\\evosuite'
-      bat 'wget -O \\var\\jenkins_home\\tools\\evosuite\\evosuite-1.0.3.jar https://github.com/EvoSuite/evosuite/releases/download/v1.0.3/evosuite-1.0.3.jar'
-      evosuiteJar = bat (script: 'find \\var\\jenkins_home\\tools -name evosuite-1.0.3.jar',
+      bat 'mkdir -p C:\\Users\\TheLetch\\.jenkins\\tools\\evosuite'
+      bat 'wget -O C:\\Users\\TheLetch\\.jenkins\\tools\\evosuite\\evosuite-1.0.3.jar https://github.com/EvoSuite/evosuite/releases/download/v1.0.3/evosuite-1.0.3.jar'
+      evosuiteJar = bat (script: 'find C:\\Users\\TheLetch\\.jenkins\\tools -name evosuite-1.0.3.jar',
                         returnStdout: true).trim()
     }
 
     // evosuite runtime
-    String evosuiteRuntimeJar = bat (script: 'find \\var\\jenkins_home\\tools -name evosuite-standalone-runtime-1.0.3.jar',
+    String evosuiteRuntimeJar = bat (script: 'find C:\\Users\\TheLetch\\.jenkins\\tools -name evosuite-standalone-runtime-1.0.3.jar',
                                     returnStdout: true).trim()
     if (evosuiteRuntimeJar.length() <= 0) {
       // install evosuite runtime
-      bat 'mkdir -p \\var\\jenkins_home\\tools\\evosuite'
-      bat 'wget -O \\var\\jenkins_home\\tools\\evosuite\\evosuite-standalone-runtime-1.0.3.jar https://github.com/EvoSuite/evosuite/releases/download/v1.0.3/evosuite-standalone-runtime-1.0.3.jar'
-      evosuiteRuntimeJar = bat (script: 'find \\var\\jenkins_home\\tools -name evosuite-standalone-runtime-1.0.3.jar',
+      bat 'mkdir -p C:\\Users\\TheLetch\\.jenkins\\tools\\evosuite'
+      bat 'wget -O C:\\Users\\TheLetch\\.jenkins\\tools\\evosuite\\evosuite-standalone-runtime-1.0.3.jar https://github.com/EvoSuite/evosuite/releases/download/v1.0.3/evosuite-standalone-runtime-1.0.3.jar'
+      evosuiteRuntimeJar = bat (script: 'find C:\\Users\\TheLetch\\.jenkins\\tools -name evosuite-standalone-runtime-1.0.3.jar',
                                returnStdout: true).trim()
     }
 
-    def evosuite = "java -jar \\var\\jenkins_home\\tools\\evosuite\\evosuite-1.0.3.jar"
+    def evosuite = "java -jar C:\\Users\\TheLetch\\.jenkins\\tools\\evosuite\\evosuite-1.0.3.jar"
     testingEnv = ["mvn=${mvn}",
                   "evosuite=${evosuite}",
                   "evosuiteRuntimeJar=${evosuiteRuntimeJar}"]
