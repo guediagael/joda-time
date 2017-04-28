@@ -73,5 +73,7 @@ node {
 
   stage ('TestExe') {
     echo 'TestExe...'
+	sh "'$mvn' compile"
+	sh "'$mvn' clean test"
   }
 }
